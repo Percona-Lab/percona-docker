@@ -156,6 +156,9 @@ set -e
 
 fi
 
+# [elouizbadr] : Launch xinetd service for HAProxy
+/etc/init.d/xinetd start
+
 #--log-error=${DATADIR}error.log
 exec mysqld --user=mysql --wsrep_cluster_name=$CLUSTER_NAME --wsrep_cluster_address="gcomm://$cluster_join" --wsrep_sst_method=xtrabackup-v2 --wsrep_sst_auth="xtrabackup:$XTRABACKUP_PASSWORD" --wsrep_node_address="$ipaddr" $CMDARG
 
