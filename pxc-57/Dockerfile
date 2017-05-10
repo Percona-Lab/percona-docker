@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # [elouizbadr] : 
 # 1- Added "xinetd" on line 8 to install X Internet Services.
 # 2- Added following line to install MySQLCheck service to work with HAProxy configuration.
-RUN echo "mysqlchk	9200/tcp" >> /etc/services && service xinetd restart
+RUN echo "mysqlchk	9200/tcp" >> /etc/services && /etc/init.d/xinetd start
 ####################################################################################################
 
 RUN wget https://repo.percona.com/apt/percona-release_0.1-4.jessie_all.deb \
