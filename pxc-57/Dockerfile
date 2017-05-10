@@ -5,8 +5,14 @@ RUN groupadd -r mysql && useradd -r -g mysql mysql
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
 		apt-transport-https ca-certificates \
-		pwgen wget \
+		pwgen wget xinetd \
 	&& rm -rf /var/lib/apt/lists/*
+
+# [elouizbadr] : 
+# 1- Added "xinetd" on line 8 to install X Internet Services.
+# 2- Added following line to install MySQLCheck service to work with HAProxy configuration.
+RUN echo "mysqlchk	9200/tcp" >> /etc/services && service xinetd restart
+####################################################################################################
 
 RUN wget https://repo.percona.com/apt/percona-release_0.1-4.jessie_all.deb \
   && dpkg -i percona-release_0.1-4.jessie_all.deb
