@@ -64,6 +64,9 @@ fi
 			GRANT REPLICATION CLIENT ON *.* TO monitor@'%' IDENTIFIED BY 'monitor';
 			GRANT PROCESS ON *.* TO monitor@localhost IDENTIFIED BY 'monitor';
 			DROP DATABASE IF EXISTS test ;
+			-- [elouizbadr] :
+			-- Add CLusterCheck script username/password to work with HAProxy
+			GRANT PROCESS ON *.* TO clustercheckuser@'%' IDENTIFIED BY 'clustercheckpassword!';			
 			FLUSH PRIVILEGES ;
 		EOSQL
 		if [ ! -z "$MYSQL_ROOT_PASSWORD" ]; then
