@@ -73,6 +73,9 @@ fi
 			GRANT REPLICATION CLIENT ON *.* TO monitor@'%' IDENTIFIED BY 'monitor';
 			GRANT PROCESS ON *.* TO monitor@localhost IDENTIFIED BY 'monitor';
 			DROP DATABASE IF EXISTS test ;
+			-- [elouizbadr] :
+			-- Add CLusterCheck script username/password to work with HAProxy
+			GRANT PROCESS ON *.* TO clustercheckuser@'%' IDENTIFIED BY 'clustercheckpassword!';			
 			FLUSH PRIVILEGES ;
 		EOSQL
 		if [ ! -z "$MYSQL_ROOT_PASSWORD" ]; then
@@ -158,6 +161,9 @@ echo "Joining cluster $cluster_join"
 set -e
 
 fi
+
+# [elouizbadr] : Launch xinetd service for HAProxy
+/etc/init.d/xinetd start
 
 #--log-error=${DATADIR}error.log
 exec mysqld --user=mysql --wsrep_cluster_name=$CLUSTER_NAME --wsrep_cluster_address="gcomm://$cluster_join" --wsrep_sst_method=xtrabackup-v2 --wsrep_sst_auth="xtrabackup:$XTRABACKUP_PASSWORD" --wsrep_node_address="$ipaddr" $CMDARG
